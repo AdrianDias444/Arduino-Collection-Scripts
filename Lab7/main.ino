@@ -11,10 +11,9 @@
 
 
 uint8_t state = 2;
-uint8_t last_state = 2;
 float dist = 0.0f;
 
-int processInfo(float dist, int state);
+int processInfo(float dist);
 
 void setup() {
     Serial.begin(9600);
@@ -29,35 +28,22 @@ void setup() {
 void loop() {
     dist = sonarRead();
 
-    last_state = state;
     state = processInfo(dist, state);
 
     switch (state) {
-        case 1:
-            motorSweep();
-            ledWrite(G_PIN);
-            break;
-
-        case 0:
-            ledWrite(R_PIN);
-            break;
-
-        default:
-            ledWarning();
-            Serial.print("Estado: ");
-            Serial.println(state);
-            break;
+		case 1:
+			motorSweep();
+			ledWrite(G_PIN);
+			break;
+		case 2:
+			ledWrite(R_PIN);
+			break;
     }
 }
 
-int processInfo(float dist, int state) {
-    if (dist < 4.0 || dist > 400.0) {
-        return 2;
-    }
-
+int processInfo(float dist) {
     if (dist < 20) {
         return 1;
-    } else {
-        return 0;
     }
+	return 2;
 }
