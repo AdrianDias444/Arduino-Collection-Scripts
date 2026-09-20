@@ -28,7 +28,7 @@ void setup() {
 void loop() {
     dist = sonarRead();
 
-    state = processInfo(dist, state);
+    state = processInfo(dist);
 
     switch (state) {
 		case 1:
@@ -42,7 +42,7 @@ void loop() {
 }
 
 int processInfo(float dist) {
-    if (dist < 20) {
+    if (dist >= 18.0 && dist <= 22.0) {
         return 1;
     }
 	return 2;
