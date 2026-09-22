@@ -1,5 +1,6 @@
-#ifndef SONAR_TK_H_
-#define SONAR_TK_H_
+#ifndef SONAR_TK_HPP
+#define SONAR_TK_HPP
+
 
 void sonarInit();
 float sonarRead();
