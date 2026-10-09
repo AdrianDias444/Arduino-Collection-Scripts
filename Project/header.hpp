@@ -1,0 +1,18 @@
+#ifndef HEADER_H
+#define HEADER_H
+
+#include <Arduino.h>
+
+
+#define DO  262
+#define RE  294
+#define MI  330
+#define FA  349
+#define SOL 392
+#define LA  440
+#define SI  494
+#define DO2 523
+
+
+
+#endif
