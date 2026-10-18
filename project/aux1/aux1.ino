@@ -8,18 +8,26 @@ void setup_passos_inicial(aux_arduino& aux)
 {
     aux.passo1.buzzer1 = 0;
     aux.passo1.buzzer2 = 0;
+    aux.passo1.delay = 100;
     
     aux.passo2.buzzer1 = 0;
     aux.passo2.buzzer2 = 0;
+    aux.passo2.delay = 100;
+
 
     aux.passo3.buzzer1 = 0;
     aux.passo3.buzzer2 = 0;
-    
+    aux.passo3.delay = 100;
+
+
     aux.passo4.buzzer1 = 0;
     aux.passo4.buzzer2 = 0;
+    aux.passo4.delay = 100;
+
 
     aux.passo5.buzzer1 = 0;
     aux.passo5.buzzer2 = 0;
+    aux.passo5.delay = 100;
 
 }
 
@@ -57,11 +65,10 @@ void setup()
     pinMode(9, INPUT);
     
     // Receber sinal da main
-    pinMode(11, INPUT);
-
+    pinMode(12, INPUT);
     // 2 buzzers em paralelo
-    buzzer1.begin(12);
-    buzzer2.begin(13);
+    buzzer1.begin(10);
+    buzzer2.begin(11);
 
 
     setup_passos_inicial(aux);
@@ -97,32 +104,32 @@ void gerenciar_definicoes_aux(aux_arduino& aux)
     while(digitalRead(5) == HIGH)
     {
         aux.passo1.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        aux.passo1.buzzer1 = converter_notas(pot_value(A1));
-        aux.passo1.buzzer2 = converter_notas(pot_value(A2));
+        aux.passo1.buzzer1 = converter_notas(pot_value(A0));
+        aux.passo1.buzzer2 = converter_notas(pot_value(A1));
     }
     while(digitalRead(6) == HIGH)
     {
         aux.passo2.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        aux.passo2.buzzer1 = converter_notas(pot_value(A1));
-        aux.passo2.buzzer2 = converter_notas(pot_value(A2));
+        aux.passo2.buzzer1 = converter_notas(pot_value(A0));
+        aux.passo2.buzzer2 = converter_notas(pot_value(A1));
     }
     while(digitalRead(7) == HIGH)
     {
         aux.passo3.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        aux.passo3.buzzer1 = converter_notas(pot_value(A1));
-        aux.passo3.buzzer2 = converter_notas(pot_value(A2));
+        aux.passo3.buzzer1 = converter_notas(pot_value(A0));
+        aux.passo3.buzzer2 = converter_notas(pot_value(A1));
     }
     while(digitalRead(8) == HIGH)
     {
         aux.passo4.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        aux.passo4.buzzer1 = converter_notas(pot_value(A1));
-        aux.passo4.buzzer2 = converter_notas(pot_value(A2));
+        aux.passo4.buzzer1 = converter_notas(pot_value(A0));
+        aux.passo4.buzzer2 = converter_notas(pot_value(A1));
     }
     while(digitalRead(9) == HIGH)
     {
         aux.passo5.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        aux.passo5.buzzer1 = converter_notas(pot_value(A1));
-        aux.passo5.buzzer2 = converter_notas(pot_value(A2));
+        aux.passo5.buzzer1 = converter_notas(pot_value(A0));
+        aux.passo5.buzzer2 = converter_notas(pot_value(A1));
     }
 }
 
@@ -141,41 +148,44 @@ void play_passo(passo_aux passo)
 void loop()
 {
     gerenciar_definicoes_aux(aux);
-    if(digitalRead(11) == HIGH)
-    {
-        play_passo(aux.passo1);
-        delay(aux.passo1.delay);
-    }
 
-    while(digitalRead(11) == LOW){pass;}
-    
-    if(digitalRead(11) == HIGH)
-    {
-        play_passo(aux.passo2);
-        delay(aux.passo2.delay);
+    while(digitalRead(12) != HIGH){
     }
-    
-    while(digitalRead(11) == LOW){pass;}
-    
-    if(digitalRead(11) == HIGH)
-    {
-        play_passo(aux.passo3);
-        delay(aux.passo3.delay);
-    }
-    
-    while(digitalRead(11) == LOW){pass;}
+    digitalWrite(0, HIGH);
+    Serial.println("LED1");
+    play_passo(aux.passo1);
+    delay(aux.passo1.delay);
+    digitalWrite(0, LOW);
 
-    if(digitalRead(11) == HIGH)
-    {
-        play_passo(aux.passo4);
-        delay(aux.passo4.delay);
+    while(digitalRead(12) != HIGH){
     }
+    digitalWrite(1, HIGH);
+    Serial.println("LED2");
+    play_passo(aux.passo2);
+    delay(aux.passo2.delay);
+    digitalWrite(1, LOW);
     
-    while(digitalRead(11) == LOW){pass;}
-    
-    if(digitalRead(11) == HIGH)
-    {
-        play_passo(aux.passo5);
-        delay(aux.passo5.delay);
+    while(digitalRead(12) != HIGH){
     }
+    digitalWrite(2, HIGH);
+    Serial.println("LED3");
+    play_passo(aux.passo3);
+    delay(aux.passo3.delay);
+    digitalWrite(2, LOW);
+    
+    while(digitalRead(12) != HIGH){
+    }
+    digitalWrite(3, HIGH);
+    Serial.println("LED4");
+    play_passo(aux.passo4);
+    delay(aux.passo4.delay);
+    digitalWrite(3, LOW);
+    
+    while(digitalRead(12) != HIGH){
+    }
+    digitalWrite(4, HIGH);
+    Serial.println("LED5");
+    play_passo(aux.passo5);
+    delay(aux.passo5.delay);
+    digitalWrite(4, LOW);
 }

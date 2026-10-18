@@ -6,13 +6,19 @@ master_arduino  master;
 void setup_passos_inicial(master_arduino& master)
 {
     master.passo1.buzzer = 0;
+    master.passo1.delay = 100;
     master.passo2.buzzer = 0;
+    master.passo2.delay = 100;
     master.passo3.buzzer = 0;
+    master.passo3.delay = 100;
     master.passo4.buzzer = 0;
+    master.passo4.delay = 100;
     master.passo5.buzzer = 0;
+    master.passo5.delay = 100;
 }
 
 
+Tone buzzer;
 
 
 int pot_value(int analog_pin)
@@ -32,17 +38,16 @@ void setup()
     pinMode(5, INPUT);
     pinMode(6, INPUT);
 
-
-    // buzzer
-    pinMode(7, OUTPUT);
-
     // Ativar AUX1
-    pinMode(12, OUTPUT);
+    pinMode(11, OUTPUT);
     // Ativar AUX2
-    pinMode(13, OUTPUT);
+    pinMode(12, OUTPUT);
 
     setup_passos_inicial(master);
-    
+    buzzer.begin(10);
+
+    Serial.begin(115200);
+
 }
 
 
@@ -75,53 +80,58 @@ void gerenciar_definicoes()
     while(digitalRead(2) == HIGH)
     {
         master.passo1.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        master.passo1.buzzer = converter_notas(pot_value(A1));
+        master.passo1.buzzer = converter_notas(pot_value(A0));
     }
     while(digitalRead(3) == HIGH)
     {
         master.passo2.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        master.passo2.buzzer = converter_notas(pot_value(A1));
+        master.passo2.buzzer = converter_notas(pot_value(A0));
     }
     while(digitalRead(4) == HIGH)
     {
         master.passo3.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        master.passo3.buzzer = converter_notas(pot_value(A1));
+        master.passo3.buzzer = converter_notas(pot_value(A0));
     }
     while(digitalRead(5) == HIGH)
     {
         master.passo4.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        master.passo4.buzzer = converter_notas(pot_value(A1));
+        master.passo4.buzzer = converter_notas(pot_value(A0));
     }
     while(digitalRead(6) == HIGH)
     {
         master.passo5.delay = map(analogRead(A5), 0, 1023, 100, 500);
-        master.passo5.buzzer = converter_notas(pot_value(A1));
+        master.passo5.buzzer = converter_notas(pot_value(A0));
     }
 
 }
 
 void play_passo(passo_master passo)
 {
+    digitalWrite(11, HIGH);
     digitalWrite(12, HIGH);
-    digitalWrite(13, HIGH);
     delay(5);
+    digitalWrite(11, LOW);
     digitalWrite(12, LOW);
-    digitalWrite(13, LOW);
     if(passo.buzzer != 0){
-        tone(7, passo.buzzer, passo.delay);
+        buzzer.play(passo.buzzer, passo.delay);
     }
-    delay(passo.delay - 22);
+    delay(passo.delay - 2);
 }
 
 
 
 void loop()
 {
+    Serial.println("Novo Ciclo");
     gerenciar_definicoes();
+    Serial.println("Iniciar Passo 1");
     play_passo(master.passo1);
+    Serial.println("Iniciar Passo 2");
     play_passo(master.passo2);
+    Serial.println("Iniciar Passo 3");
     play_passo(master.passo3);
+    Serial.println("Iniciar Passo 4");
     play_passo(master.passo4);
+    Serial.println("Iniciar Passo 5");
     play_passo(master.passo5);
-
 }
